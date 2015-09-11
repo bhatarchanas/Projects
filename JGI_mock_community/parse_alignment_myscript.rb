@@ -1,5 +1,9 @@
 require 'bio'
 
+# Input file 1 = Blast csv file (fh)
+# Input file 2 = 16sMicrobial_ncbi.fasta which is the 16s reference in NCBI (fh_2)
+# Output = csv file with OTU_num, Query_ID, Identity and Alignment_length
+
 file_out = File.open("JGI_78/blast_parsed_78.csv", "w")
 file_out.puts("OTU_num\tQuery_id\tIdentity\tAlignment_length")
 
