@@ -1,8 +1,10 @@
 require 'bio'
 
+# Getting the specie name of the blast hit is being a pain. This script parses a csv blast file and gets the specie name using the 16s reference from NCBI
 # Input file 1 = Blast csv file (fh)
 # Input file 2 = 16sMicrobial_ncbi.fasta which is the 16s reference in NCBI (fh_2)
 # Output = csv file with OTU_num, Query_ID, Identity and Alignment_length
+# Output 2 = csv file with the OTU number and the specie name 
 
 file_out = File.open("JGI_78/blast_parsed_78.csv", "w")
 file_out.puts("OTU_num\tQuery_id\tIdentity\tAlignment_length")
