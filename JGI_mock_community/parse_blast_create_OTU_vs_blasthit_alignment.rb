@@ -8,7 +8,7 @@ require 'bio'
 # The seqs corresponding to each OTU is then grabbed, put in a file with the first sequence being the one from the ref DB.
 # These seqs are then aligned using einsi maaft. 
 
-####
+#### Getting a hash with the OTU number as the key and the ref ID as the value
 blast_fh = File.open("JGI_12_blast/JGI_12_blast_hit_table.csv", "r")
 otu_hit_hash = {}
 blast_fh.each_line do |line|   
@@ -24,7 +24,7 @@ blast_fh.each_line do |line|
 end 
 #puts otu_hit_hash
 
-####
+#### Making sure the value in that hash has only one ref ID. If it doesnt, split it, get only one and then store it in the hash
 otu_hit_hash.each do |key, value|
 	#puts query_array[each_qid]
 	if value.include?(";")
@@ -36,7 +36,8 @@ otu_hit_hash.each do |key, value|
 end
 #puts otu_hit_hash
 
-####
+#### Creating another hash with the OTU num as key and an array as value
+# Array has definition line in 0th index and seq in 1st index
 otu_def_hash = {}
 ncbi_fh = Bio::FlatFile.auto("16sMicrobial_ncbi.fasta")
 ncbi_fh.each do |entry|
@@ -76,7 +77,7 @@ Dir.foreach('JGI_12_blast') do |file|
 end
 
 =begin
-#####
+##### To check if all the seqs were extracted from samtools 
 Dir.foreach('JGI_12_blast') do |file|
 	input = folder+file
 	if file.start_with?("OTU_") && if file.end_with?("_list.txt")
