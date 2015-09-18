@@ -1,5 +1,13 @@
 require 'bio'
 
+##### NOTES
+# Input file 1- csv file, blast output
+# Input file 2- 16sMicrobial_ncbi.fasta (NCBI's 16s reference in FASTA format)
+# Input file 3- Oriented and filetred for seqs < 1700 
+# Description - Takes the csv file, gets the ref ID for the best hit of each OTU, gets seq corresponding to that ID and stored it all in a hash.
+# The seqs corresponding to each OTU is then grabbed, put in a file with the first sequence being the one from the ref DB.
+# These seqs are then aligned using einsi maaft. 
+
 ####
 blast_fh = File.open("JGI_12_blast/JGI_12_blast_hit_table.csv", "r")
 otu_hit_hash = {}
