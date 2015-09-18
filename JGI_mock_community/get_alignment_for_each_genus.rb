@@ -12,7 +12,7 @@ require 'spreadsheet'
 folder = "JGI_12/"
  
 #### Opening the spreadsheet and using sheet1 as the worksheet
-taxa_file = Spreadsheet.open(folder+"taxa_sorted_1.xls")
+taxa_file = Spreadsheet.open(folder+"taxa_sorted_2.xls")
 sheet1 = taxa_file.worksheet('Sheet1') # can use an index or worksheet name
 
 #### Obtaining an array with all the genuses and the confidences and otus with sizes
@@ -76,7 +76,7 @@ genus_count_hash.each do |key, value|
 	end
 end
 
-####
+#### Creating a hash with all the seq headers that belong to the same genus
 fasta_file = Bio::FlatFile.auto("JGI_12/JGI_Mock_Oriented_12.fasta")
 Dir.foreach(folder) do |file|
 	array_of_headers = []
@@ -93,29 +93,9 @@ Dir.foreach(folder) do |file|
 end
 #puts seq_headers
 
-#### Check for the presence of a header in the fasta file created by comparing with the hash. If there, print into a new output file. 
-fasta_file = Bio::FlatFile.auto("JGI_12/JGI_Mock_Oriented_12.fasta")
-seq_headers.each do |key, value|
-	otu_file = File.open(folder+"final_"+key+"_filtered.txt", "w")
-	puts key
-	#puts value
-  	(0..value.size-1).each do |header|
-		#puts value[header]
-		fasta_file = Bio::FlatFile.auto("JGI_12/JGI_Mock_Oriented_12.fasta")
-		fasta_file.each do |entry|
-			#puts entry.definition
-			if value[header].eql?(entry.definition)
-				#puts entry.naseq.size
-				otu_file.puts(entry.definition)
-			end
-		end
-	end
-end
-
-
 ##### Extract the seqs belonging to each OTU using samtools. 
 Dir.foreach(folder) do |file|
-	if file.start_with?("final_")&& if file.end_with?("_filtered.txt")
+	if file.start_with?("OTU_")&& if file.end_with?("_all.txt")
 		file_basename = File.basename(file, ".txt")
 		input = folder+file
 		output = folder+file_basename+"_subset.fasta"
@@ -128,7 +108,7 @@ end
 
 ##### Align the seuences using einsi in maaft
 Dir.foreach(folder) do |file|
-	if file.start_with?("final_") && if file.end_with?("_subset.fasta")
+	if file.start_with?("OTU_") && if file.end_with?("_subset.fasta")
 		file_basename = File.basename(folder+file, ".fasta")
 		#puts "Im here", file_basename
 		input = folder+file_basename+".fasta"
